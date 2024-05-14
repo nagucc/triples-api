@@ -7,7 +7,7 @@ export const options = {
   password: env.MYSQL_PASSWORD,
 };
 
-export const jwt_secret: any = env.JWT_SECRET;
+export const jwt_secret: any = env.JWT_SECRET || 'secret';
 
 export default {
   options,
