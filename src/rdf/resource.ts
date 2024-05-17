@@ -44,6 +44,7 @@ export const setCommonPropertyValues = async (req, res) => {
     { iri: RDFS.terms.comment, value: comment },
     { iri: RDFS.terms.seeAlso, value: seeAlso },
   ].map(async p => {
+    if (!p.value) return null;
     return res.resource.setPropertyValues(p.iri, p.value);
   });
   await Promise.all(operations);
