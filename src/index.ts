@@ -7,7 +7,7 @@ import propertyRoutes from './predicate.ts';
 import tripleRoutes from './triple.ts';
 import objectRoutes from './object.ts';
 import subjectRoutes from './subject.ts';
-import owlRoutes from './owl';
+import rdfRoutes from './rdf';
 
 const app = express();
 const PORT = 3000;
@@ -26,7 +26,7 @@ app.use('/v1/predicate', propertyRoutes);
 app.use('/v1/triple', tripleRoutes);
 app.use('/v1/object', objectRoutes);
 app.use('/v1/subject', subjectRoutes);
-app.use('/v1/owl', owlRoutes);
+app.use('/v1/rdf', rdfRoutes);
 // 启动服务器
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
