@@ -13,7 +13,9 @@ const factory = new Factory(options);
  */
 const getOrCreateResource = async (req ,res, next) => {
   const { iri } = req.params; // Resource的IRI
-  
+  if (!iri) return res.json({
+    error: 'iri不能为空',
+  });
   // 创建Resource
   res.resource = await factory.createRdfResource(iri);
   next();
