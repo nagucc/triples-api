@@ -26,7 +26,7 @@ const getCommonPropertyValues = async (req, res) => {
     RDFS.terms.seeAlso,
   ].map(async p => {
     // 获取原值
-    const os = await res.resource.getPropertyValues(p);
+    const os = await res.resource.getPropertyValues(await factory.createRdfProperty(p));
   });
   const [label, comment, seeAlso] = await Promise.all(operations);
   res.json({
