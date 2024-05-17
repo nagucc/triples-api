@@ -8,10 +8,16 @@ import tripleRoutes from './triple.ts';
 import objectRoutes from './object.ts';
 import subjectRoutes from './subject.ts';
 import rdfRoutes from './rdf';
+import { version } from '../package.json';
 
 const app = express();
 const PORT = 3000;
 
+app.get('/version', (_, res) => res.json({
+  data: {
+    version
+  },
+}));
 // 使⽤ express.json() 中间件解析 JSON 格式的请求体
 app.use(express.json());
 app.use(cors());
