@@ -19,6 +19,22 @@ const getOrCreateResource = async (req ,res, next) => {
   next();
 }
 
+const getCommonPropertyValues = async (req, res) => {
+  const operations = [
+    RDFS.terms.label,
+    RDFS.terms.comment,
+    RDFS.terms.seeAlso,
+  ].map(async p => {
+    // 获取原值
+    const os = await res.resource.getPropertyValues(p);
+  });
+  const [label, comment, seeAlso] = await Promise.all(operations);
+  res.json({
+    data: {
+      label, comment, seeAlso,
+    }
+  });
+}
 export const setCommonPropertyValues = async (req, res) => {
   const { label, comment, seeAlso } = req.body;
   const operations = [
@@ -53,6 +69,7 @@ export const removeCommonPropertyValues = async (_req: any, res: { resource: Rdf
   next();
 }
 
+router.get('/:iri', getOrCreateResource, getCommonPropertyValues);
 router.put('/:iri', getOrCreateResource, setCommonPropertyValues);
 router.post('/:iri', getOrCreateResource, removeCommonPropertyValues, setCommonPropertyValues);
 export default router;
