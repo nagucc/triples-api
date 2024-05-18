@@ -28,33 +28,18 @@ const getInstances = async (_req: any, res: {
     const [ labels, comments, seeAlsos, types ] = await Promise.all([
       rdfs.label, rdfs.comment, rdfs.seeAlso, rdf.type,
     ].map(p => resource.getPropertyValues(p)));
-    return { labels, comments, seeAlsos, types };
+    return {
+      iri: resource.iri.toString(),
+      labels, comments, seeAlsos, types,
+    };
   };
+  const data = await Promise.all(resources.map(r => getCommonPvs(r)));
 
   res.json({
-    data: resources.map(async r => ({
-      iri: r.iri.toString(),
-      ...(await getCommonPvs(r)),
-    })),
+    data,
   });
 }
 
-const getCommonPropertyValues = async (req, res) => {
-  const operations = [
-    RDFS.terms.label,
-    RDFS.terms.comment,
-    RDFS.terms.seeAlso,
-  ].map(async p => {
-    // 获取原值
-    const os = await res.resource.getPropertyValues(await factory.createRdfProperty(p));
-  });
-  const [label, comment, seeAlso] = await Promise.all(operations);
-  res.json({
-    data: {
-      label, comment, seeAlso,
-    }
-  });
-}
 export const setCommonPropertyValues = async (req, res) => {
   const { label, comment, seeAlso } = req.body;
   const operations = [
