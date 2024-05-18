@@ -17,7 +17,7 @@ const getOrCreateResource = async (req ,res, next) => {
     error: 'iri不能为空',
   });
   // 创建Resource
-  res.resource = await factory.createRdfResource(iri);
+  res.resource = await factory.createRdfsResource(iri);
   next();
 }
 

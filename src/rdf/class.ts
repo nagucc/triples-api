@@ -5,7 +5,6 @@
 import express from 'express';
 import { Factory, IRdfsClass, RDF, RDFS, RdfsResource } from 'nagu-owl';
 import { options } from '../utils.ts';
-import { getOrCreateResource } from './resource'
 const router = express.Router();
 const factory = new Factory(options);
 
@@ -19,9 +18,11 @@ const getOrCreateClass = async (req, res, next) => {
   next();
 }
 const getInstances = async (req: { class: IRdfsClass }, res) => {
-  const data = await res.class.instances();
+  const resources = await res.class.instances();
   res.json({
-    data,
+    data: resources.map(r => ({
+      iri: r.iri.toString(),
+    })),
   });
 }
 
