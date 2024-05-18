@@ -25,6 +25,7 @@ const getInstances = async (_req: any, res: {
 
   // 定义获取公共信息的函数
   const getCommonPvs = async (resource: RdfsResource) => {
+    console.log('get common pvs for: ', resource);
     const [ labels, comments, seeAlsos, types ] = await Promise.all([
       rdfs.label, rdfs.comment, rdfs.seeAlso, rdf.type,
     ].map(p => resource.getPropertyValues(p)));
@@ -33,7 +34,7 @@ const getInstances = async (_req: any, res: {
 
   res.json({
     data: resources.map(async r => ({
-      iri: r,
+      iri: r.iri,
       ...(await getCommonPvs(r)),
     })),
   });
