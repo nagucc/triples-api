@@ -19,7 +19,7 @@ const getOrCreateClass = async (req, res, next) => {
   next();
 }
 const getInstances = async (req: { class: IRdfsClass }, res) => {
-  const data = await req.class.instances();
+  const data = await res.class.instances();
   res.json({
     data,
   });
