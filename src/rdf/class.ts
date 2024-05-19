@@ -31,11 +31,11 @@ const getInstances = async (_req: any, res: {
     return {
       iri: resource.iri.toString(),
       labels: labels.map(l => l.toString()),
-      label: (labels || [''])[0].toString(),
+      label: (labels || [])[0]?.toString() || '',
       comments: comments.map(l => l.toString()),
-      comment: (comments || [''])[0].toString(),
+      comment: (comments || [])[0].toString() || '',
       seeAlsos: seeAlsos.map(l => l.toString()),
-      seeAlso: (seeAlsos || [''])[0].toString(),
+      seeAlso: (seeAlsos || [])[0].toString() || '',
       types: types.map(l => l.toString()),
     };
   };
