@@ -30,7 +30,13 @@ const getInstances = async (_req: any, res: {
     ].map(p => resource.getPropertyValues(p)));
     return {
       iri: resource.iri.toString(),
-      labels, comments, seeAlsos, types,
+      labels: labels.map(l => l.toString()),
+      label: (labels || [''])[0].toString(),
+      comments: comments.map(l => l.toString()),
+      comment: (comments || [''])[0].toString(),
+      seeAlsos: seeAlsos.map(l => l.toString()),
+      seeAlso: (seeAlsos || [''])[0].toString(),
+      types: types.map(l => l.toString()),
     };
   };
   const data = await Promise.all(resources.map(r => getCommonPvs(r)));
