@@ -5,7 +5,7 @@
 import express from 'express';
 import { Factory, RDF } from 'nagu-owl';
 import { options } from '../utils.ts';
-import { removeCommonPropertyValues, setCommonPropertyValues } from './resource.ts';
+import { setAnnotations } from './resource.ts';
 
 const router = express.Router();
 const factory = new Factory(options);
@@ -40,11 +40,11 @@ const listProperties = async (req, res) => {
 /**
  * 添加Property
  */
-router.put('/:iri', getOrCreateProperty, setCommonPropertyValues);
+router.put('/:iri', getOrCreateProperty, setAnnotations);
 /**
  * 修改Property
  */
-router.post('/:iri', getOrCreateProperty, removeCommonPropertyValues, removeCommonPropertyValues);
+router.post('/:iri', getOrCreateProperty, setAnnotations);
 /**
  * 获取所有rdf:Property实例
  */

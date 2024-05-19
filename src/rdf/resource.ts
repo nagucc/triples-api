@@ -21,58 +21,68 @@ const getOrCreateResource = async (req ,res, next) => {
   next();
 }
 
-const getCommonPropertyValues = async (req, res) => {
-  const operations = [
-    RDFS.terms.label,
-    RDFS.terms.comment,
-    RDFS.terms.seeAlso,
-  ].map(async p => {
-    // 获取原值
-    const os = await res.resource.getPropertyValues(await factory.createRdfProperty(p));
-  });
-  const [label, comment, seeAlso] = await Promise.all(operations);
+const getAnnotations = async (req, res: {
+  json: any; resource: RdfsResource
+}) => {
+  // const operations = [
+  //   RDFS.terms.label,
+  //   RDFS.terms.comment,
+  //   RDFS.terms.seeAlso,
+  // ].map(async p => {
+  //   // 获取原值
+  //   const os = await res.resource.getPropertyValues(await factory.createRdfProperty(p));
+  // });
+  await res.resource.getAnnotations();
+  const { iri, label, comment, seeAlso } = res.resource;
   res.json({
     data: {
-      label, comment, seeAlso,
+      iri,
+      label: label.toString(),
+      comment: comment.toString(),
+      seeAlso: seeAlso.toString(),
     }
   });
 }
-export const setCommonPropertyValues = async (req, res) => {
-  const { label, comment, seeAlso } = req.body;
-  const operations = [
-    { iri: RDFS.terms.label, value: label },
-    { iri: RDFS.terms.comment, value: comment },
-    { iri: RDFS.terms.seeAlso, value: seeAlso },
-  ].map(async p => {
-    if (!p.value) return null;
-    return res.resource.setPropertyValues(p.iri, p.value);
-  });
-  await Promise.all(operations);
+export const setAnnotations = async (req, res: {
+  json: any; resource: RdfsResource 
+}) => {
+  // const { label, comment, seeAlso } = req.body;
+  await res.resource.setAnnotations(req.body);
+  // const operations = [
+  //   { iri: RDFS.terms.label, value: label },
+  //   { iri: RDFS.terms.comment, value: comment },
+  //   { iri: RDFS.terms.seeAlso, value: seeAlso },
+  // ].map(async p => {
+  //   if (!p.value) return null;
+  //   return res.resource.setPropertyValues(p.iri, p.value);
+  // });
+  // await Promise.all(operations);
+  const { iri } = res.resource;
   res.json({
     data: {
-      iri: res.resource.uri,
-      label,
-      comment,
-      seeAlso,
+      iri,
+      // label,
+      // comment,
+      // seeAlso,
     },
   });
 }
 
-export const removeCommonPropertyValues = async (_req: any, res: { resource: RdfsResource; }, next: () => void) => {
-  const operations = [
-    RDFS.terms.label,
-    RDFS.terms.comment,
-    RDFS.terms.seeAlso,
-  ].map(async p => {
-    // 获取原值
-    const os = await res.resource.getPropertyValues(p);
-    // 删除原值
-    await Promise.all(os.map(o => res.resource.removePropertyValue(p, o)));
-  });
-  next();
-}
+// export const removeCommonPropertyValues = async (_req: any, res: { resource: RdfsResource; }, next: () => void) => {
+//   const operations = [
+//     RDFS.terms.label,
+//     RDFS.terms.comment,
+//     RDFS.terms.seeAlso,
+//   ].map(async p => {
+//     // 获取原值
+//     const os = await res.resource.getPropertyValues(p);
+//     // 删除原值
+//     await Promise.all(os.map(o => res.resource.removePropertyValue(p, o)));
+//   });
+//   next();
+// }
 
-router.get('/:iri', getOrCreateResource, getCommonPropertyValues);
-router.put('/:iri', getOrCreateResource, setCommonPropertyValues);
-router.post('/:iri', getOrCreateResource, removeCommonPropertyValues, setCommonPropertyValues);
+router.get('/:iri', getOrCreateResource, getAnnotations);
+router.put('/:iri', getOrCreateResource, setAnnotations);
+router.post('/:iri', getOrCreateResource, /*removeCommonPropertyValues,*/ setAnnotations);
 export default router;
