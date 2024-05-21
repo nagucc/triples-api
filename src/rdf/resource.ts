@@ -5,13 +5,14 @@
 import express from 'express';
 import { Factory, RdfsResource } from 'nagu-owl';
 import { options } from '../utils.ts';
+import { IRdfsResource } from 'nagu-owl-types';
 
 const router = express.Router();
 const factory = new Factory(options);
 /**
  * 添加Resource，存放在res.resource
  */
-const getOrCreateResource = async (req ,res, next) => {
+const getOrCreateResource = async (req, res, next) => {
   const { iri } = req.params; // Resource的IRI
   if (!iri) return res.json({
     error: 'iri不能为空',
@@ -21,23 +22,15 @@ const getOrCreateResource = async (req ,res, next) => {
   next();
 }
 
-const getAnnotations = async (req, res: {
-  json: any; resource: RdfsResource
-}) => {
-  await res.resource.getAnnotations();
-  const { iri, label, comment, seeAlso } = res.resource;
+const getAnnotations = async (req, res) => {
+  const resource = res.resource as IRdfsResource;
+  await resource.getAnnotations();
+  const { iri, label, comment, seeAlso } = resource;
   res.json({
-    data: {
-      iri,
-      label: label.toString(),
-      comment: comment.toString(),
-      seeAlso: seeAlso.toString(),
-    }
+    data: resource,
   });
 }
-export const setAnnotations = async (req, res: {
-  json: any; resource: RdfsResource 
-}) => {
+export const setAnnotations = async (req, res) => {
   await res.resource.setAnnotations(req.body);
   const { iri } = res.resource;
   res.json({

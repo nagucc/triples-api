@@ -15,7 +15,7 @@ const getOrCreateClass = async (req, res, next) => {
     error: 'iri不能为空',
   });
   // 创建Class
-  res.class = await factory.createRdfsClass(iri);
+  res.resource = await factory.createRdfsClass(iri);
   next();
 }
 const getInstances = async (_req: any, res: {
