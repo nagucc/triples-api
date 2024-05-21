@@ -1,10 +1,11 @@
 /**
- * 管理rdf:Resource
+ * 管理rdfs:Class
  */
 
 import express from 'express';
 import { Factory, RdfsClass, RdfsResource } from 'nagu-owl';
 import { options } from '../utils.ts';
+import { setAnnotations } from './resource.ts';
 const router = express.Router();
 const factory = new Factory(options);
 
@@ -43,65 +44,16 @@ const getInstances = async (_req: any, res: {
         seeAlso: t.seeAlso,
       })),
     }
-    
-    // const [ labels, comments, seeAlsos, types ] = await Promise.all([
-    //   rdfs.label, rdfs.comment, rdfs.seeAlso, rdf.type,
-    // ].map(p => resource.getPropertyValues(p)));
-    // return {
-    //   iri: resource.iri.toString(),
-    //   labels: labels.map(l => l.toString()),
-    //   label: (labels || [])[0]?.toString() || '',
-    //   comments: comments.map(l => l.toString()),
-    //   comment: (comments || [])[0]?.toString() || '',
-    //   seeAlsos: seeAlsos.map(l => l.toString()),
-    //   seeAlso: (seeAlsos || [])[0]?.toString() || '',
-    //   types: types.map(l => l.toString()),
-    // };
   };
   const data = await Promise.all(resources.map(r => getCommonPvs(r)));
-  // const data = await Promise.all(resources.map(r => r.getAnnotations()));
-
   res.json({
     data,
   });
 }
 
-// const setCommonPropertyValues = async (req, res) => {
-//   const { label, comment, seeAlso } = req.body;
-//   const operations = [
-//     { iri: RDFS.terms.label, value: label },
-//     { iri: RDFS.terms.comment, value: comment },
-//     { iri: RDFS.terms.seeAlso, value: seeAlso },
-//   ].map(async p => {
-//     if (!p.value) return null;
-//     return res.resource.setPropertyValues(p.iri, p.value);
-//   });
-//   await Promise.all(operations);
-//   res.json({
-//     data: {
-//       iri: res.resource.uri,
-//       label,
-//       comment,
-//       seeAlso,
-//     },
-//   });
-// }
 
-// const removeCommonPropertyValues = async (_req: any, res: { resource: RdfsResource; }, next: () => void) => {
-//   const operations = [
-//     RDFS.terms.label,
-//     RDFS.terms.comment,
-//     RDFS.terms.seeAlso,
-//   ].map(async p => {
-//     // 获取原值
-//     const os = await res.resource.getPropertyValues(p);
-//     // 删除原值
-//     await Promise.all(os.map(o => res.resource.removePropertyValue(p, o)));
-//   });
-//   next();
-// }
+
 
 router.get('/:iri/instances', getOrCreateClass, getInstances);
-// router.put('/:iri', getOrCreateResource, setCommonPropertyValues);
-// router.post('/:iri', getOrCreateResource, removeCommonPropertyValues, setCommonPropertyValues);
+router.put('/:iri', getOrCreateClass, setAnnotations);
 export default router;
