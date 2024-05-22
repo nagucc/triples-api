@@ -1,6 +1,6 @@
 {
   "name": "triples-api",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "对triples进行操作的Restful API",
   "main": "index.js",
   "type": "module",
