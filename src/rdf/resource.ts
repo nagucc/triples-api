@@ -25,7 +25,6 @@ const getOrCreateResource = async (req, res, next) => {
 const getAnnotations = async (req, res) => {
   const resource = res.resource as IRdfsResource;
   await resource.getAnnotations();
-  const { iri, label, comment, seeAlso } = resource;
   res.json({
     data: resource,
   });

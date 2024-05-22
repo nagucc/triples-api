@@ -6,7 +6,6 @@ import express from 'express';
 import { Factory, RdfsClass, RdfsResource } from 'nagu-owl';
 import { options } from '../utils.ts';
 import { setAnnotations } from './resource.ts';
-import { IRdfsClass, IRdfsResource } from 'nagu-owl-types';
 const router = express.Router();
 const factory = new Factory(options);
 
