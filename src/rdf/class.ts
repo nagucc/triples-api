@@ -3,7 +3,7 @@
  */
 
 import express from 'express';
-import { Factory, RdfsClass, RdfsResource } from 'nagu-owl';
+import { Factory, RdfsClass, RdfsResource, RDFS } from 'nagu-owl';
 import { options } from '../utils.ts';
 import { setAnnotations } from './resource.ts';
 const router = express.Router();
@@ -18,11 +18,10 @@ const getOrCreateClass = async (req, res, next) => {
   res.resource = await factory.createRdfsClass(iri);
   next();
 }
-const getInstances = async (_req: any, res: {
-  json: any; class: RdfsClass 
-}) => {
+const getInstances = async (_req: any, res) => {
   // 获取所有Instance
-  const resources = await res.class.instances();
+  const cls = res.resource as RdfsClass;
+  const resources = await cls.instances();
 
   // 定义获取公共信息的函数
   const getCommonPvs = async (resource: RdfsResource) => {
