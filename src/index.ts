@@ -3,6 +3,7 @@ import express from 'express';
 import { expressjwt } from 'express-jwt';
 import cors from 'cors';
 import { jwt_secret } from './utils.ts';
+import userRoutes from './user.ts';
 import propertyRoutes from './predicate.ts';
 import tripleRoutes from './triple.ts';
 import objectRoutes from './object.ts';
@@ -27,7 +28,7 @@ app.use(expressjwt({
 }));
 
 // 使用中间件加载路由
-
+app.use('/v1/user', userRoutes);
 app.use('/v1/predicate', propertyRoutes);
 app.use('/v1/triple', tripleRoutes);
 app.use('/v1/object', objectRoutes);
