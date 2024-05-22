@@ -6,6 +6,7 @@ import express from 'express';
 import { Factory, RdfsClass, RdfsResource } from 'nagu-owl';
 import { options } from '../utils.ts';
 import { setAnnotations } from './resource.ts';
+import { IRdfsClass, IRdfsResource } from 'nagu-owl-types';
 const router = express.Router();
 const factory = new Factory(options);
 
@@ -51,9 +52,18 @@ const getInstances = async (_req: any, res: {
   });
 }
 
+const destoryClass = async (req, res) => {
+  const cls = res.resource as RdfsClass;
+  await cls.destroy();
+  res.json({
+    ret: 0,
+  });
+}
+
 
 
 
 router.get('/:iri/instances', getOrCreateClass, getInstances);
 router.put('/:iri', getOrCreateClass, setAnnotations);
+router.delete('/:iri', getOrCreateClass, destoryClass)
 export default router;
