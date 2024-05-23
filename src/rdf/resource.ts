@@ -41,7 +41,19 @@ export const setAnnotations = async (req, res) => {
   });
 }
 
+const getPropertyValues = async (req, res) => {
+  const { piri } = req.params;
+  const resource = res.resource as IRdfsResource;
+  const vs = await resource.getPropertyValues(piri);
+  console.log('vs::', vs);
+  const data = await Promise.all(vs.map(v => v.getAnnotations()));
+  res.json({
+    data,
+  });
+}
+
 router.get('/:iri', getOrCreateResource, getAnnotations);
 router.put('/:iri', getOrCreateResource, setAnnotations);
 router.post('/:iri', getOrCreateResource, setAnnotations);
+router.get('/:iri/property/:piri/value', getOrCreateResource, getPropertyValues);
 export default router;
