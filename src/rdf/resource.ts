@@ -24,14 +24,15 @@ const getOrCreateResource = async (req, res, next) => {
 
 const getAnnotations = async (req, res) => {
   const resource = res.resource as IRdfsResource;
-  await resource.getAnnotations();
+  const data = await resource.getAnnotations();
   res.json({
-    data: resource,
+    data,
   });
 }
 export const setAnnotations = async (req, res) => {
-  await res.resource.setAnnotations(req.body);
-  const { iri } = res.resource;
+  const resource = res.resource as IRdfsResource;
+  await resource.setAnnotations(req.body);
+  const { iri } = resource;
   res.json({
     data: {
       iri,
