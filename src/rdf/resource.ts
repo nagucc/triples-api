@@ -45,15 +45,35 @@ const getPropertyValues = async (req, res) => {
   const { piri } = req.params;
   const resource = res.resource as IRdfsResource;
   const vs = await resource.getPropertyValues(piri);
-  console.log('vs::', vs);
   const data = await Promise.all(vs.map(v => v.getAnnotations()));
   res.json({
     data,
   });
 }
+const setPropertyValue = async (req, res) => {
+  const { piri } = req.params;
+  const { value } = req.body;
+  const resource = res.resource as IRdfsResource;
+  try {
+    const data = await resource.setPropertyValue(piri, value);
+    res.json({
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error,
+    });
+  }
+}
+
 
 router.get('/:iri', getOrCreateResource, getAnnotations);
 router.put('/:iri', getOrCreateResource, setAnnotations);
 router.post('/:iri', getOrCreateResource, setAnnotations);
 router.get('/:iri/property/:piri/value', getOrCreateResource, getPropertyValues);
+/**
+ * 设置属性值
+ */
+router.post('/:iri/property/:piri', getOrCreateResource, setPropertyValue);
+
 export default router;
