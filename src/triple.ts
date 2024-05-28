@@ -1,6 +1,7 @@
 import express from 'express';
-import Triples from 'nagu-triples';
+import Triples from 'nagu-triples/src/index.ts';
 import { options } from './utils.ts';
+import { INotion } from 'nagu-triples-types';
 
 const router = express.Router();
 
@@ -34,7 +35,16 @@ const deleteById = async (req, res) => {
   });
 };
 
+const listByP = async (req, res) => {
+  const pid = req.params.pid as string;
+  const data = await Triples.listByP(pid, options);
+  res.json({
+    data,
+  });
+}
+
 router.get('/:id', getById)
 router.put('/', getOrCreate);
 router.delete('/:id', deleteById)
+router.get('/predicate/:pid', listByP);
 export default router;
