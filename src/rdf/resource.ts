@@ -66,6 +66,11 @@ const setPropertyValue = async (req, res) => {
   }
 }
 
+// const batchRetriveAnnotations = async (req, res) => {
+//   const iris = req.body.iris as Array<string>;
+//   const iri
+// }
+
 
 router.get('/:iri', getOrCreateResource, getAnnotations);
 router.put('/:iri', getOrCreateResource, setAnnotations);
@@ -75,5 +80,7 @@ router.get('/:iri/property/:piri/value', getOrCreateResource, getPropertyValues)
  * 设置属性值
  */
 router.post('/:iri/property/:piri', getOrCreateResource, setPropertyValue);
+
+// router.post('/batch-retrive-annotations', )
 
 export default router;
