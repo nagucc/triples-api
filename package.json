@@ -1,6 +1,6 @@
 {
   "name": "triples-api",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "对triples进行操作的Restful API",
   "main": "index.js",
   "type": "module",
@@ -13,9 +13,9 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-jwt": "^8.4.1",
-    "nagu-owl": "^1.11.5",
+    "nagu-owl": "^1.11.10",
     "nagu-owl-types": "^1.4.1",
-    "nagu-triples": "^2.0.8",
+    "nagu-triples": "^2.1.0",
     "nagu-triples-types": "^1.0.2"
   }
 }

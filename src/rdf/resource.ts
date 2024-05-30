@@ -18,8 +18,8 @@ const getOrCreateResource = async (req, res, next) => {
     error: 'iri不能为空',
   });
   // 创建Resource
-  res.resource = await factory.createRdfsResource(iri);
-  next();
+  res.resource = await factory.createRdfsResource(iri).catch(error => res.json({ error }));
+  if (res.resource) next();
 }
 
 const getAnnotations = async (req, res) => {
