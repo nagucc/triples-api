@@ -3,7 +3,7 @@
  */
 
 import express from 'express';
-import { Factory, RDF } from 'nagu-owl';
+import { Factory, RDF, RdfProperty } from 'nagu-owl';
 import { options } from '../utils.ts';
 import { setAnnotations } from './resource.ts';
 
@@ -22,6 +22,14 @@ const getOrCreateProperty = async (req ,res) => {
   });
 }
 
+const destoryProperty = async (req, res) => {
+  const cls = res.resource as RdfProperty;
+  await cls.destroy();
+  res.json({
+    ret: 0,
+  });
+}
+
 /**
  * 添加Property
  */
@@ -30,4 +38,9 @@ router.put('/:iri', getOrCreateProperty, setAnnotations);
  * 修改Property
  */
 router.post('/:iri', getOrCreateProperty, setAnnotations);
+
+/**
+ * 删除属性
+ */
+router.delete('/:iri', getOrCreateProperty, destoryProperty);
 export default router;
