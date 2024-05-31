@@ -24,9 +24,10 @@ const getOrCreateProperty = async (req ,res) => {
 
 const destoryProperty = async (req, res) => {
   const cls = res.resource as RdfProperty;
-  await cls.destroy();
+  const data = await cls.destroy().catch(error => res.json({ error }));
   res.json({
     ret: 0,
+    data,
   });
 }
 
