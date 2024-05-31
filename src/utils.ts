@@ -1,5 +1,5 @@
 import { env } from 'node:process';
-import winston, { createLogger, transports, config } from "winston";
+import winston, { createLogger, transports } from "winston";
 import { Syslog } from 'winston-syslog';
 
 export const options = {
@@ -41,8 +41,8 @@ export const getLogger = (app_name) => {
         level: 'debug', // 设置 logger 的最低日志级别
         transports: [
             new Syslog({
-                host: '192.168.0.98', // 根据客户端所在位置设置IP
-                port: 5514, // 根据IP调整端口号
+                host: env.SYSLOG_IP || '192.168.0.98', // 根据客户端所在位置设置IP
+                port: env.SYSLOG_PORT || 5514, // 根据IP调整端口号
                 protocol: 'tcp4',
                 app_name,
                 eol: '\n',
