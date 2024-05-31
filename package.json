@@ -1,6 +1,6 @@
 {
   "name": "triples-api",
-  "version": "1.11.1",
+  "version": "1.12.0",
   "description": "对triples进行操作的Restful API",
   "main": "index.js",
   "type": "module",
@@ -16,6 +16,11 @@
     "nagu-owl": "^1.11.12",
     "nagu-owl-types": "^1.4.2",
     "nagu-triples": "^2.1.0",
-    "nagu-triples-types": "^1.0.2"
+    "nagu-triples-types": "^1.0.2",
+    "winston": "^3.13.0",
+    "winston-syslog": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.13"
   }
 }

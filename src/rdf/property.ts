@@ -4,11 +4,12 @@
 
 import express from 'express';
 import { Factory, RDF, RdfProperty } from 'nagu-owl';
-import { options } from '../utils.ts';
+import { getLogger, options } from '../utils.ts';
 import { setAnnotations } from './resource.ts';
 
 const router = express.Router();
 const factory = new Factory(options);
+const logger = getLogger('triples-api::/rdf/property');
 /**
  * 添加Property
  */
@@ -25,6 +26,7 @@ const getOrCreateProperty = async (req ,res) => {
 const destoryProperty = async (req, res) => {
   const cls = res.resource as RdfProperty;
   const data = await cls.destroy().catch(error => res.json({ error }));
+  logger.info(`destoryProperty::删除triples ${data} 行.`);
   res.json({
     ret: 0,
     data,
