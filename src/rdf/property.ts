@@ -1,5 +1,6 @@
 /**
  * 管理rdf:Property
+ * /property
  */
 
 import express from 'express';
@@ -24,8 +25,10 @@ const getOrCreateProperty = async (req ,res) => {
 }
 
 const destoryProperty = async (req, res) => {
-  const cls = res.resource as RdfProperty;
-  const data = await cls.destroy().catch(error => res.json({ error }));
+  const { iri } = req.params; // Property的IRI
+  // 创建Property
+  const property = await factory.createRdfProperty(iri);
+  const data = await property.destroy().catch(error => res.json({ error }));
   logger.info(`destoryProperty::删除triples ${data} 行.`);
   res.json({
     ret: 0,
@@ -33,17 +36,17 @@ const destoryProperty = async (req, res) => {
   });
 }
 
-/**
- * 添加Property
- */
-router.put('/:iri', getOrCreateProperty, setAnnotations);
-/**
- * 修改Property
- */
-router.post('/:iri', getOrCreateProperty, setAnnotations);
+// /**
+//  * 添加Property
+//  */
+// router.put('/:iri', getOrCreateProperty, setAnnotations);
+// /**
+//  * 修改Property
+//  */
+// router.post('/:iri', getOrCreateProperty, setAnnotations);
 
 /**
  * 删除属性
  */
-router.delete('/:iri', getOrCreateProperty, destoryProperty);
+router.delete('/:iri', destoryProperty);
 export default router;
