@@ -52,9 +52,10 @@ const getInstances = async (_req: any, res) => {
 
 const destoryClass = async (req, res) => {
   const cls = res.resource as RdfsClass;
-  await cls.destroy();
+  const data = await cls.destroy();
   res.json({
     ret: 0,
+    data,
   });
 }
 
