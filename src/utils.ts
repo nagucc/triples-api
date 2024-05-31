@@ -1,5 +1,5 @@
 import { env } from 'node:process';
-import { createLogger, transports, config } from "winston";
+import winston, { createLogger, transports, config } from "winston";
 import { Syslog } from 'winston-syslog';
 
 export const options = {
@@ -38,7 +38,7 @@ export function removeEmptyFields(obj: Record<string, any>): Record<string, any>
  */
 export const getLogger = (app_name) => {
     const logger = createLogger({
-        // levels: config.syslog.levels,
+        level: 'debug', // 设置 logger 的最低日志级别
         transports: [
             new Syslog({
                 host: '192.168.0.98', // 根据客户端所在位置设置IP
@@ -49,8 +49,12 @@ export const getLogger = (app_name) => {
                 level: 'debug',
             }),
             new transports.Console({
-
                 level: 'debug',
+                format: winston.format.combine(
+                    winston.format.colorize(), // 为日志级别添加颜色
+                    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), // 添加时间戳
+                    winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`) // 自定义输出格式
+                ),
             }),
         ],
     });
