@@ -66,6 +66,15 @@ const setPropertyValue = async (req, res) => {
   }
 }
 
+const removeType = async (req, res) => {
+  const { type } = req.body;
+  const resource = res.resource as IRdfsResource;
+  const data = await resource.removeType(type).catch(error => res.status(500).json({ error }));
+  res.json({
+    data,
+  });
+}
+
 // const batchRetriveAnnotations = async (req, res) => {
 //   const iris = req.body.iris as Array<string>;
 //   const iri
@@ -81,6 +90,10 @@ router.get('/:iri/property/:piri/value', getOrCreateResource, getPropertyValues)
  */
 router.post('/:iri/property/:piri', getOrCreateResource, setPropertyValue);
 
+/**
+ * 移除资源的type
+ */
+router.post('/:iri/remove-type', getOrCreateResource, removeType)
 // router.post('/batch-retrive-annotations', )
 
 export default router;
