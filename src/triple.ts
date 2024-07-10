@@ -9,7 +9,7 @@ const getById = async (req, res) => {
   const { id } = req.params;
   const triple = await Triples.getById(id, options);
   res.json({
-    ret: 0,
+    ret: triple ? 0 : 404,
     data: triple,
   });
 }

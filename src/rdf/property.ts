@@ -12,7 +12,7 @@ const router = express.Router();
 const factory = new Factory(options);
 const logger = getLogger('triples-api::/rdf/property');
 /**
- * 添加Property
+ * 获取或添加Property
  */
 const getOrCreateProperty = async (req ,res) => {
   const { iri } = req.params; // Property的IRI
